@@ -1,0 +1,46 @@
+body {
+    font-family: "맑은 고딕","고딕","돋움";
+}
+
+header {
+    background-color: cornflowerblue;
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 10px 10px 10px 25px;
+    /* padding-left: 30px; */
+    /* padding-top: 10px; */
+    /* padding-bottom: 20px; */
+    /* padding: 10px 20px 50px 60px; */
+    /* 맨 처음 위쪽 기준으로 시계방향 순서 trbl */
+    overflow: hidden;
+}
+
+header h1 { /* 헤더 아래(자손)의 h1태그에 적용 */
+    /* background-color: aliceblue; */
+    width: 35%;
+    color: #FFF;
+    font-size: 2em;
+    float: left;
+}
+
+header>nav {
+    /* background-color: skyblue; */
+    width: 55%;
+    float: right;
+}
+
+nav>ul {
+    list-style-type: none;
+}
+
+nav>ul>li {
+    display: inline;
+    float: left;
+    margin: 15px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
