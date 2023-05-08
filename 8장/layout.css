@@ -19,7 +19,7 @@ header {
 header h1 { /* 헤더 아래(자손)의 h1태그에 적용 */
     /* background-color: aliceblue; */
     width: 30%;
-    color: #FFF;
+    color: white;
     font-size: 2em;
     float: left;
 }
@@ -100,5 +100,5 @@ footer{
     margin: auto;
     text-align: center;
     padding: 10px;
-    color: #FFF;
+    color: white;
 }
