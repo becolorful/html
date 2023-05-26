@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>트랜지션1 - 김주경</title>
+        <style>
+            div {
+                width: 200px;
+                height: 200px;
+                float: left;
+                margin: 30px;
+            }
+
+            .bg-tr {
+                background-color: antiquewhite;
+                transition: all ease 1s;
+                /* all : 속성 전부 다 */
+                /* ease : 속도 (천천히 -빨리-천천히) */
+                /* 트랜지션은 원본에 주기 */
+            }
+            .bg-tr:hover {
+                background-color: pink;
+            }
+
+            .border-tr {
+                background-color: antiquewhite;
+                border: 3px solid orange;
+                transition: all linear 0.5s;
+                /* linear : 처음부터 끝까지 같은 속도로 */
+            }
+
+            .border-tr:hover{
+                border: 3px solid orangered;
+                border-radius: 50%;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <div class="bg-tr">
+
+        </div>
+
+        <div class="border-tr">
+
+        </div>
+    </body>
+</html>
