@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>애니메이션 1 - 김주경</title>
+        <style>
+            div {
+                width: 100px;
+                height: 100px;
+                background-color: rosybrown;
+                animation-name: change-shape;
+                animation-duration: 3s;
+
+            }
+
+            @keyframes change-shape {
+                from{
+                    background-color: rosybrown;
+                    border: 2px solid gray;
+                }
+
+                to{
+                    background-color: gray;
+                    border: 2px solid rosybrown;
+                    border-radius: 50%;
+                }
+            }
+            
+        </style>
+    </head>
+    <body>
+        <div></div>
+    </body>
+</html>
