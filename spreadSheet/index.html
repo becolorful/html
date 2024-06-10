@@ -1,0 +1,226 @@
+<!-- *코드 참조 출처*
+
+    Search - js/css
+        https://jinyh.tistory.com/23
+    Support - js
+        https://showyourself.tistory.com/3
+        https://sunnnkim.tistory.com/171 
+        Chat GPT -->
+
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sheet Function</title>
+        <style>
+            body {
+            background-color: #29352a;
+            margin: 0;
+            padding: 0;
+            height: 90vh;
+            display: flex;
+            }
+
+            header {
+            height: 5vh;
+            }
+
+            aside {
+            margin: 35vh auto 0  auto;
+            width: 80vw;
+            animation: asidemove 1.5s;
+            }
+
+            aside h1 {
+            width: auto;
+            text-align: center;
+            font-size: 22px;
+            font-weight: normal;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0 auto 10px auto;
+            color: #FFF;
+            animation: hmove 1.5s linear;
+            }
+
+            h1 > p {
+            padding: 0 5px;
+            margin: 0;
+            box-sizing: border-box;
+            word-break: keep-all;
+            animation: hbr 1.8s;
+            }
+
+            nav p {
+            background: white;
+            margin: 0 auto;
+            width: 420px;
+            height: 55px;
+            padding-bottom: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+
+            animation: pshape 1.5s ease-in;
+            }
+
+            p > a {
+            cursor: default;
+            display: inline-block;
+            text-align: right;
+            padding: 0;
+            width: 419px;
+            cursor: pointer;
+            }
+
+            a > span {
+            width: 360px;
+            color: #ccc;
+            display: inline-block;
+            padding: 0 5px 25px 40px;
+            font-size: 22px;
+            text-align: center;
+            box-sizing: border-box;
+            animation: color 2s linear;
+            }
+
+            img {
+            height: 22px;
+            margin-top: 18px;
+            text-align: right;
+            margin-right: 18px;
+            animation: color 2s linear;
+            }
+
+            a {
+            text-decoration: none;
+            color: #FFF;
+            }
+
+            nav > div {
+            width: 300px;
+            margin: 0 auto;
+            padding: 0 auto;
+            text-align: center;
+            color: #FFF;
+            animation: color 2s linear;
+            }
+
+            nav > div > a {
+            display: inline-block;
+            color: #FFF;
+            height: 40px;
+            width: 20%;
+            padding: 0 auto;
+            margin: 10px auto;
+            font-size: 14px;
+            text-align: center;
+            animation: color 2s linear;
+            }
+
+            section {
+            animation: fold 1.5;
+            }
+
+            @keyframes asidemove {
+            0% {
+                margin: 5vh 10% 0  0;
+                width: 16%;
+            }
+            100% {
+                margin: 35vh 10vw 0  10vw;
+                width: 80vw;
+            }
+            }
+
+            @keyframes hmove {
+            0% {
+                margin-top: 5vh;
+                width: 100px;
+            }
+            50% {
+                margin-top: 0;
+                width: 100px;
+            }
+            100% {
+                margin-top: 0;
+                width: 80vw;
+            }
+            }
+
+            @keyframes hbr {
+            0% {
+                word-break: break-all;
+            }
+            90% {
+                word-break: keep-all;
+            }
+            100% {
+                word-break: initial;
+            }
+            }
+
+            @keyframes pshape {
+            from {
+                width: 100px;
+                height: 250px;
+                margin-top: 75px;
+                background-color: #ffffff3f;
+                padding-bottom: 20px;
+            }
+            100% {
+                width: 420px;
+                height: 55px;
+                background-color: #FFF;
+                padding-bottom: 0;
+            }
+            }
+
+            @keyframes color {
+            0% {
+                width: 1px;
+                font-size: 1px;
+                opacity: 0;
+            }
+            75% {
+                font-size: 22px;
+                opacity: 0;
+            }
+            100% {
+                opacity: 100%;
+            }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            
+        </header>
+        <aside>
+            <div>
+                <h1><p>Spread Sheet</p></h1>
+                <nav>
+                    <p>
+                        <a id="search" href="search.html" title="Search">
+                            <span>Find Function</span>
+                            <img src="img/search_b.png"></a>
+                        
+                    </p>
+                    <div>
+                        <a id="calc" href="calc.html"> Calc </a> |
+                        <a id="data" href="data.html"> Data </a> |
+                        <a id="stat" href="stat.html"> Stat </a> |
+                        <a id="time" href="time.html"> Time </a>
+                    </div>
+                </nav>
+            </div>
+        </aside>
+        <section>
+
+        </section>
+        <footer>
+
+        </footer>
+    </body>
+
+</html>

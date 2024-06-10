@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sheet Function</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/details.css">
+        <style>
+            a#data {
+                color :rgb(46, 46, 46);
+                background-color: #FFF;
+                border-radius: 5px 0 0 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            
+        </header>
+        <aside>
+            <div>
+                <h1><a href="index.html" title="To Main">Spread<br>Sheet</a></h1>
+                <nav>
+                    <a id="search" href="search.html" title="Search"></a>
+                    <p>
+                        <a id="calc" href="calc.html"> Calc </a><br>
+                        <a id="data" href="data.html"> Data </a><br>
+                        <a id="stat" href="stat.html"> Stat </a><br>
+                        <a id="time" href="time.html"> Time </a>
+                    </p>
+                    <a class="top" href="#top" title="top">top</a>
+                </nav>
+            </div>
+        </aside>
+        <section>
+            <p id="top"></p>
+            <!-- 논리 -->
+            <article>
+                <details>
+                    <summary id="if" class="top">
+                        <p>
+                            <span class="name">IF</span>
+                            <span class="fn">=if(조건, 참값, 거짓값)</span>
+                            <span class="detail">조건을 검사하여 참인 경우 참값을, 거짓인 경우 거짓값을 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =IF(A1>5, "큼", "작음")<br>
+                        셀 A1의 값이 5보다 큰 경우 "큼"을 반환, 그렇지 않은 경우 "작음"을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="and">
+                        <p>
+                            <span class="name">AND</span>
+                            <span class="fn">=and(조건1, 조건2, ...)</span>
+                            <span class="detail">모든 조건이 참인 경우 참을 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =AND(A1>5, A2&lt;10)<br>
+                        셀 A1의 값이 5보다 크고, A2의 값이 10보다 작은 경우 참을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="or">
+                        <p>
+                            <span class="name">OR</span>
+                            <span class="fn">=or(조건1, 조건2, ...)</span>
+                            <span class="detail">하나 이상의 조건이 참인 경우 참을 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =OR(A1>5, A2&lt;10)<br>
+                        셀 A1의 값이 5보다 크거나, A2의 값이 10보다 작은 경우 참을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="not">
+                        <p>
+                            <span class="name">NOT</span>
+                            <span class="fn">=not(조건)</span>
+                            <span class="detail">조건의 반대를 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =NOT(A1>5)<br>
+                        셀 A1의 값이 5보다 크지 않은 경우 참을 반환합니다.
+                    </div>
+                </details>
+            </article>
+            <!-- 문자열 추출 -->
+            <article>
+                <details>
+                    <summary id="left">
+                        <p>
+                            <span class="name">LEFT</span>
+                            <span class="fn">=left(문자열, k)</span>
+                            <span class="detail">문자열의 왼쪽에서부터 k번째까지의 문자 추출</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =LEFT("Hello World", 5) 결과는 "Hello"가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="right">
+                        <p>
+                            <span class="name">RIGHT</span>
+                            <span class="fn">=right(문자열, k)</span>
+                            <span class="detail">문자열의 오른쪽에서부터 k번째까지의 문자 추출</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =RIGHT("Hello World", 5) 결과는 "World"가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="mid">
+                        <p>
+                            <span class="name">MID</span>
+                            <span class="fn">=mid(문자열, k, n)</span>
+                            <span class="detail">문자열의 왼쪽에서 k번째 문자부터 n개의 문자 추출</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =MID("Hello World", 7, 5) 결과는 "World"가 됩니다.
+                    </div>
+                </details>
+            </article>
+            <!-- 문자열 결합/분리 -->
+            <article>
+                <details>
+                    <summary id="textjoin">
+                        <p>
+                            <span class="name">TEXTJOIN</span>
+                            <span class="fn">=textjoin(구분 기호, 빈칸무시, 범위, [범위2, 범위3, ...])</span>
+                            <span class="detail">여러 문자열을 구분 기호로 나눠 하나의 문장으로 결합</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =TEXTJOIN(", ", TRUE, A1:A3) 결과는 "Apple, Banana, Orange"가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="split">
+                        <p>
+                            <span class="name">SPLIT</span>
+                            <span class="fn">=split(문자열, 구분자, [문자 분할, 빈 문자 삭제])</span>
+                            <span class="detail">구분자를 사용해 문자열을 분할</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =SPLIT("Apple, Banana, Orange", ", ") 결과는 {"Apple"; "Banana"; "Orange"}가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="textsplit">
+                        <p>
+                            <span class="name">TEXTSPLIT</span>
+                            <span class="fn">=textsplit(문자열, 열 구분자, [행 구분자, 연속 구분 기호 무시, 대/소문자 구분])</span>
+                            <span class="detail">열과 행 구분자를 사용해 문자열을 분할</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =TEXTSPLIT("Apple,Banana;Orange", ",", ";") 결과는 {"Apple"; "Banana"; "Orange"}가 됩니다.
+                    </div>
+                </details>
+            </article>
+            <!-- 문자열로 변환 -->
+            <article>
+                <details>
+                    <summary id="lower">
+                        <p>
+                            <span class="name">LOWER</span>
+                            <span class="fn">=lower(문자열)</span>
+                            <span class="detail">지정된 문자열을 소문자로 변환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =LOWER("Hello World") 결과는 "hello world"가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="upper">
+                        <p>
+                            <span class="name">UPPER</span>
+                            <span class="fn">=upper(문자열)</span>
+                            <span class="detail">지정된 문자열을 대문자로 변환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =UPPER("Hello World") 결과는 "HELLO WORLD"가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="proper">
+                        <p>
+                            <span class="name">PROPER</span>
+                            <span class="fn">=proper(문자열)</span>
+                            <span class="detail">각 단어의 첫번째 글자를 대문자로 변환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =PROPER("hello world") 결과는 "Hello World"가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="replace">
+                        <p>
+                            <span class="name">REPLACE</span>
+                            <span class="fn">=replace(문자열, 시작지점(1~), 길이, 새 문자열)</span>
+                            <span class="detail">문자열의 일부분을 다른 문자열로 대체</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =REPLACE("Hello World", 7, 5, "Universe") 결과는 "Hello Universe"가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="substitute">
+                        <p>
+                            <span class="name">SUBSTITUTE</span>
+                            <span class="fn">=substitute(문자열, 찾을 문자, 새 문자열, [찾을 바꿀 지점])</span>
+                            <span class="detail">문자에서 특정 문자를 찾아 다른 문자로 대체</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =SUBSTITUTE("Hello World", "o", "i") 결과는 "Helli World"가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="text">
+                        <p>
+                            <span class="name">TEXT</span>
+                            <span class="fn">=text(값, 표시형식)</span>
+                            <span class="detail">특정 문자열 또는 셀의 값을 원하는 서식의 문자열로 변환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =TEXT(TODAY(), "yyyy-mm-dd") 결과는 현재 날짜를 "2023-06-17"과 같은 형식으로 표시합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="phonetic">
+                        <p>
+                            <span class="name">PHONETIC</span>
+                            <span class="fn">=phonetic(문자열)</span>
+                            <span class="detail">한자/일본어의 윗주(후리가나)를 추출/반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =PHONETIC("漢字") 결과는 "かんじ"가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="char">
+                        <p>
+                            <span class="name">CHAR</span>
+                            <span class="fn">=char(숫자)</span>
+                            <span class="detail">입력된 수를 유니코드표에 해당되는 문자로 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =CHAR(65) 결과는 "A"가 됩니다.
+                    </div>
+                </details>
+            </article>
+            <!-- 숫자로 변환 -->
+            <article>
+                <details>
+                    <summary id="code">
+                        <p>
+                            <span class="name">CODE</span>
+                            <span class="fn">=code(문자열)</span>
+                            <span class="detail">입력된 문자열의 첫 번째 문자를 나타내는 유니코드 숫자 값을 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =CODE("A") 결과는 65가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="value">
+                        <p>
+                            <span class="name">VALUE</span>
+                            <span class="fn">=value(문자열)</span>
+                            <span class="detail">숫자 서식으로 인식되는 문자열을 숫자로 변환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =VALUE("123") 결과는 123이 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="len">
+                        <p>
+                            <span class="name">LEN</span>
+                            <span class="fn">=len(문자열)</span>
+                            <span class="detail">선택된 셀 또는 문자열의 글자수를 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =LEN("Hello") 결과는 5가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="search_f">
+                        <p>
+                            <span class="name">SEARCH</span>
+                            <span class="fn">=search(찾을 문자, 문자열, [시작 지점])</span>
+                            <span class="detail">문자열에서 특정 문자가 처음으로 발견된 지점을 반환 (대소문자 구분)</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =SEARCH("o", "Hello World") 결과는 5가 됩니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="find_f">
+                        <p>
+                            <span class="name">FIND</span>
+                            <span class="fn">=find(찾을 문자, 문자열, [시작 지점])</span>
+                            <span class="detail">문자열에서 특정 문자가 처음으로 발견된 지점을 반환 (대소문자 무시)</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =FIND("o", "Hello World") 결과는 5가 됩니다.
+                    </div>
+                </details>
+            </article>
+            
+            <p class="help">
+                <a href="support.html">
+                    원하는 내용을 찾지 못하셨나요?
+                </a>
+            </p>
+        </section>
+        <nav class="quickbar">
+            <a href="#if">if</a>
+            <a href="#and">and</a>
+            <a href="#or">or</a>
+            <a href="#not">not</a>
+            <a href="#left">left</a>
+            <a href="#right">right</a>
+            <a href="#mid">mid</a>
+            <a href="#textjoin">textjoin</a>
+            <a href="#split">split</a>
+            <a href="#textsplit">textsplit</a>
+            <a href="#lower">lower</a>
+            <a href="#upper">upper</a>
+            <a href="#proper">proper</a>
+            <a href="#replace">replace</a>
+            <a href="#substitute">substitute</a>
+            <a href="#text">text</a>
+            <a href="#phonetic">phonetic</a>
+            <a href="#char">char</a>
+            <a href="#code">code</a>
+            <a href="#value">value</a>
+            <a href="#len">len</a>
+            <a href="#search_f">search</a>
+            <a href="#find_f">find</a>
+        </nav>
+        <footer>
+
+        </footer>
+    </body>
+</html>
