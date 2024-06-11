@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sheet Function</title>
+        <link rel="stylesheet" type="text/css" href="css/details.css">
+        <link rel="stylesheet" type="text/css" href="css/search.css">
+        <style>
+            nav p {
+                text-justify: inter-word;
+                
+            }
+            a#search {
+                color :rgb(46, 46, 46);
+                background-color: #FFF;
+                border-radius: 5px 0 0 5px;
+                padding-right: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            
+        </header>
+        <aside>
+            <div>
+                <h1><a href="index.html" title="To Main">Spread<br>Sheet</a></h1>
+                <nav>
+                    <a id="search" href="search.html" title="Search"><img src="img/search_b.png" style="height: 22px;"></a>
+                    <p>
+                        <a id="calc" href="calc.html"> Calc </a><br>
+                        <a id="data" href="data.html"> Data </a><br>
+                        <a id="stat" href="stat.html"> Stat </a><br>
+                        <a id="time" href="time.html"> Time </a>
+                    </p>
+                    <a class="top" href="#top" title="top">top</a>
+                </nav>
+            </div>
+        </aside>
+        <div id="topround"></div>
+        
+            <!-- 검색창 시작 -->
+            <!-- 출처 : https://jinyh.tistory.com/23 -->
+            
+            <div class="search-in-body">
+                <input type="search" class="search-box" placeholder="함수 또는 내용 입력" autofocus>
+                <span class="result-counter"></span>
+                <button class="next-btn">▼</button>
+                <button class="prev-btn">▲</button>
+                <button class="delete"></button>                
+            </div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                var input = document.querySelector("input[type='search']"),
+                    prevBtn = document.querySelector(".prev-btn"),
+                    nextBtn = document.querySelector(".next-btn"),
+                    deleteBtn = document.querySelector(".delete"),
+                    content = document.querySelector(".entry-content"),
+                    contentMark = new Mark(content),
+                    results,
+                    currentClass = "current",
+                    offsetTop = 200,
+                    currentIndex = 0;
+                var variableCounter = 0;
+                var totalCount = 0;
+                var enterPressedOnce = false; // 엔터 키가 한 번 눌렸는지 여부를 저장하는 변수
+
+                input.addEventListener("input", function() {
+                    var searchVal = this.value;
+                    contentMark.unmark({
+                        done: function(totalMatches) {
+                        contentMark.mark(searchVal, {
+                            separateWordSearch: false,
+                            acrossElements: true,
+                            done: function(totalMatches) {
+                            results = content.querySelectorAll("mark");
+                            totalCount = totalMatches;
+                            if (totalCount !== 0) {
+                                variableCounter = 1;
+                            }
+                            currentIndex = 0; // 입력값 변경 시 인덱스 초기화
+                            enterPressedOnce = false;
+                            updateResultCounter();
+                            }
+                        });
+                        }
+                    });
+                });
+
+                deleteBtn.addEventListener("click", function() {
+                    input.value = ""; 
+                    contentMark.unmark(); 
+                    results = [];
+                    totalCount = 0; 
+                    variableCounter = 0; 
+                    updateResultCounter(); 
+                });
+
+                input.addEventListener("keydown", function(event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault(); // 기본 Enter 키 동작 방지
+                        if (!enterPressedOnce) {
+                            // 최초로 엔터 키를 눌렀을 때
+                            enterPressedOnce = true;
+                            currentIndex = 0;
+                            jumpTo();
+                        } else if (results.length > 0) {
+                            // 이미 엔터 키를 눌렀고 결과가 있을 때
+                            currentIndex += 1;
+                            if (currentIndex >= results.length) {
+                                currentIndex = 0;
+                            }
+                            jumpTo();
+                        }
+                        updateResultCounter();
+                    }
+                });
+
+                nextBtn.addEventListener("click", prevNextHandler);
+                prevBtn.addEventListener("click", prevNextHandler);
+                nextBtn.after(prevBtn);
+
+                function prevNextHandler() {
+                    if (results.length) {
+                        if (this === prevBtn) {
+                            currentIndex -= 1;
+                            if (currentIndex < 0) {
+                                currentIndex = results.length - 1;
+                            }
+                        } else if (this === nextBtn) {
+                            currentIndex += 1;
+                            if (currentIndex >= results.length) {
+                                currentIndex = 0;
+                            }
+                        }
+                        jumpTo();
+                        updateResultCounter();
+                    }
+                }
+
+                document.querySelectorAll("[data-search='next']").forEach(function(element) {
+                    element.addEventListener("click", function() {
+                    if (variableCounter < totalCount) {
+                        variableCounter = variableCounter + 1;
+                    } else {
+                        variableCounter = 1;
+                    }
+                    updateResultCounter();
+                    });
+                });
+
+                document.querySelectorAll("[data-search='prev']").forEach(function(element) {
+                    element.addEventListener("click", function() {
+                    if (variableCounter > 1) {
+                        variableCounter = variableCounter - 1;
+                    } else {
+                        variableCounter = totalCount;
+                    }
+                    updateResultCounter();
+                    });
+                });
+
+                function jumpTo() {
+                    if (results.length) {
+                    var position,
+                        current = results[currentIndex];
+                    results.forEach(function(result) {
+                        result.classList.remove(currentClass);
+                    });
+                    if (current) {
+                        current.classList.add(currentClass);
+                        position = current.offsetTop - offsetTop;
+                        window.scrollTo(0, position);
+                    }
+                    }
+                }
+
+                function updateResultCounter() {
+                    var counter = document.querySelector(".result-counter");
+                    if (totalCount > 0) {
+                        counter.textContent = currentIndex + 1 + " / " + totalCount;
+                    } else {
+                        counter.textContent = "";
+                    }
+                }
+                });
+
+            </script>
+            <!-- 본문내용 검색창 끝 -->
+        <section>
+            <div class="entry-content">
+                <p id="top"> </p>
+                <!-- 연산 -->
+                <article>
+                    <details>
+                        <summary class="top" id="sum">
+                            <p>
+                                <span class="name">SUM</span>
+                                <span class="fn">=sum(셀 범위/숫자)</span>
+                                <span class="detail">지정된 셀 범위의 합계를 반환 (인수는 최대 30개)</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SUM(A1:A5)<br>
+                            셀 A1부터 A5까지의 합계를 반환합니다.
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary id="sumif">
+                            <p>
+                                <span class="name">SUMIF</span>
+                                <span class="fn">=sumif(조건범위, 조건, 합계범위)</span>
+                                <span class="detail">조건을 만족하는 데이터의 합계를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SUMIF(A1:A5, ">3", B1:B5)<br>
+                            셀 A1부터 A5까지의 값 중 3보다 큰 값들의 합계를 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="sumifs">
+                            <p>
+                                <span class="name">SUMIFS</span>
+                                <span class="fn">=sumifs(합계범위, 조건범위1, 조건1, [조건범위2, 조건2], ...)</span>
+                                <span class="detail">범위 안 여러개의 조건을 만족하는 값의 합계를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SUMIFS(C1:C5, A1:A5, ">3", B1:B5, "&lt;6")<br>
+                            셀 A1부터 A5까지의 값 중 3보다 크고, 셀 B1부터 B5까지의 값 중 6보다 작은 값들의 합계를 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="subtotal">
+                            <p>
+                                <span class="name">SUBTOTAL</span>
+                                <span class="fn">=subtotal(부분 합 함수, 범위)</span>
+                                <span class="detail">목록이나 범위에서 부분 합을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SUBTOTAL(9, A1:A5)<br>
+                            셀 A1부터 A5까지의 값들의 합계를 반환하며, 숨겨진 값은 포함하지 않습니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="product">
+                            <p>
+                                <span class="name">PRODUCT</span>
+                                <span class="fn">=product(셀 범위/숫자)</span>
+                                <span class="detail">지정된 셀 범위의 곱을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =PRODUCT(A1:A5)<br>
+                            셀 A1부터 A5까지의 값들의 곱을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="power">
+                            <p>
+                                <span class="name">POWER</span>
+                                <span class="fn">=power(숫자, k)</span>
+                                <span class="detail">처음 입력한 수를 밑수로 하여 k제곱한 수를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =POWER(2, 3)<br>
+                            2를 세제곱한 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="quotient">
+                            <p>
+                                <span class="name">QUOTIENT</span>
+                                <span class="fn">=quotient(숫자, k)</span>
+                                <span class="detail">숫자를 k로 나눈 수를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =QUOTIENT(10, 3)<br>
+                            10을 3으로 나눈 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="mod">
+                            <p>
+                                <span class="name">MOD</span>
+                                <span class="fn">=mod(숫자,k)</span>
+                                <span class="detail">숫자를 k로 나눈 나머지 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =MOD(10, 3)<br>
+                            10을 3으로 나눈 나머지 값을 반환합니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 반올림/올림/내림 -->
+                <article>
+                    <details>
+                        <summary id="round">
+                            <p>
+                                <span class="name">ROUND</span>
+                                <span class="fn">=round(인수, 소수점 이하 자릿수)</span>
+                                <span class="detail">표시된 소수점 이하 자릿수에서 반올림</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =ROUND(3.14159, 2)<br>
+                            3.14159를 소수점 이하 두 자리에서 반올림합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="roundup">
+                            <p>
+                                <span class="name">ROUNDUP</span>
+                                <span class="fn">=roundup(인수, 올림할 자릿수)</span>
+                                <span class="detail">지정된 자릿수 아래의 수를 올림</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =ROUNDUP(3.14159, 2)<br>
+                            3.14159를 소수점 이하 두 자리에서 올립니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="rounddown">
+                            <p>
+                                <span class="name">ROUNDDOWN</span>
+                                <span class="fn">=rounddown(인수, 내림할 자릿수)</span>
+                                <span class="detail">지정된 자릿수 아래의 수를 내림</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =ROUNDDOWN(3.14159, 2)<br>
+                            3.14159를 소수점 이하 두 자리에서 내립니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="trunc">
+                            <p>
+                                <span class="name">TRUNC</span>
+                                <span class="fn">=trunc(인수,자릿수)</span>
+                                <span class="detail">지정된 자릿수 아래의 수를 버림</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =TRUNC(3.14159, 2)<br>
+                            3.14159를 소수점 이하 두 자리에서 버립니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="even">
+                            <p>
+                                <span class="name">EVEN</span>
+                                <span class="fn">=even(숫자)</span>
+                                <span class="detail">가장 가까운 짝수로 올림</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =EVEN(3.7)<br>
+                            3.7을 가장 가까운 짝수로 올립니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="odd">
+                            <p>
+                                <span class="name">ODD</span>
+                                <span class="fn">=odd(숫자)</span>
+                                <span class="detail">가장 가까운 홀수로 올림</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =ODD(3.2)<br>
+                            3.2를 가장 가까운 홀수로 올립니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 인수 변환 -->
+                <article>
+                    <details>
+                        <summary id="pi">
+                            <p>
+                                <span class="name">PI</span>
+                                <span class="fn">=pi()</span>
+                                <span class="detail">원주율을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =PI()<br>
+                            원주율 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="int">
+                            <p>
+                                <span class="name">INT</span>
+                                <span class="fn">=int(실수)</span>
+                                <span class="detail">실수에서 소수점 이하 절삭 후 정수로 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =INT(3.14)<br>
+                            3.14를 소수점 이하 절삭 후 정수로 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="abs">
+                            <p>
+                                <span class="name">ABS</span>
+                                <span class="fn">=abs(숫자)</span>
+                                <span class="detail">숫자의 절댓값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =ABS(-5)<br>
+                            -5의 절댓값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="sqrt">
+                            <p>
+                                <span class="name">SQRT</span>
+                                <span class="fn">=sqrt(숫자)</span>
+                                <span class="detail">숫자의 제곱근을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SQRT(25)<br>
+                            25의 제곱근을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="exp">
+                            <p>
+                                <span class="name">EXP</span>
+                                <span class="fn">=exp(지수)</span>
+                                <span class="detail">지수 함수의 값 (e^지수)을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =EXP(2)<br>
+                            e의 제곱 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="ln">
+                            <p>
+                                <span class="name">LN</span>
+                                <span class="fn">=ln(숫자)</span>
+                                <span class="detail">숫자의 자연로그 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =LN(10)<br>
+                            10의 자연로그 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="log">
+                            <p>
+                                <span class="name">LOG</span>
+                                <span class="fn">=log(숫자, 밑)</span>
+                                <span class="detail">지정된 밑을 가지는 숫자의 로그 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =LOG(100, 10)<br>
+                            10을 밑으로 하는 100의 로그 값을 반환합니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 논리 -->
+                <article>
+                    <details>
+                        <summary id="if">
+                            <p>
+                                <span class="name">IF</span>
+                                <span class="fn">=if(조건, 참값, 거짓값)</span>
+                                <span class="detail">조건을 검사하여 참인 경우 참값을, 거짓인 경우 거짓값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =IF(A1>5, "큼", "작음")<br>
+                            셀 A1의 값이 5보다 큰 경우 "큼"을 반환, 그렇지 않은 경우 "작음"을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="and">
+                            <p>
+                                <span class="name">AND</span>
+                                <span class="fn">=and(조건1, 조건2, ...)</span>
+                                <span class="detail">모든 조건이 참인 경우 참을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =AND(A1>5, A2&lt;10)<br>
+                            셀 A1의 값이 5보다 크고, A2의 값이 10보다 작은 경우 참을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="or">
+                            <p>
+                                <span class="name">OR</span>
+                                <span class="fn">=or(조건1, 조건2, ...)</span>
+                                <span class="detail">하나 이상의 조건이 참인 경우 참을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =OR(A1>5, A2&lt;10)<br>
+                            셀 A1의 값이 5보다 크거나, A2의 값이 10보다 작은 경우 참을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="not">
+                            <p>
+                                <span class="name">NOT</span>
+                                <span class="fn">=not(조건)</span>
+                                <span class="detail">조건의 반대를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =NOT(A1>5)<br>
+                            셀 A1의 값이 5보다 크지 않은 경우 참을 반환합니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 문자열 추출 -->
+                <article>
+                    <details>
+                        <summary id="left">
+                            <p>
+                                <span class="name">LEFT</span>
+                                <span class="fn">=left(문자열, k)</span>
+                                <span class="detail">문자열의 왼쪽에서부터 k번째까지의 문자 추출</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =LEFT("Hello World", 5) 결과는 "Hello"가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="right">
+                            <p>
+                                <span class="name">RIGHT</span>
+                                <span class="fn">=right(문자열, k)</span>
+                                <span class="detail">문자열의 오른쪽에서부터 k번째까지의 문자 추출</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =RIGHT("Hello World", 5) 결과는 "World"가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="mid">
+                            <p>
+                                <span class="name">MID</span>
+                                <span class="fn">=mid(문자열, k, n)</span>
+                                <span class="detail">문자열의 왼쪽에서 k번째 문자부터 n개의 문자 추출</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =MID("Hello World", 7, 5) 결과는 "World"가 됩니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 문자열 결합/분리 -->
+                <article>
+                    <details>
+                        <summary id="textjoin">
+                            <p>
+                                <span class="name">TEXTJOIN</span>
+                                <span class="fn">=textjoin(구분 기호, 빈칸무시, 범위, [범위2, 범위3, ...])</span>
+                                <span class="detail">여러 문자열을 구분 기호로 나눠 하나의 문장으로 결합</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =TEXTJOIN(", ", TRUE, A1:A3) 결과는 "Apple, Banana, Orange"가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="split">
+                            <p>
+                                <span class="name">SPLIT</span>
+                                <span class="fn">=split(문자열, 구분자, [문자 분할, 빈 문자 삭제])</span>
+                                <span class="detail">구분자를 사용해 문자열을 분할</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SPLIT("Apple, Banana, Orange", ", ") 결과는 {"Apple"; "Banana"; "Orange"}가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="textsplit">
+                            <p>
+                                <span class="name">TEXTSPLIT</span>
+                                <span class="fn">=textsplit(문자열, 열 구분자, [행 구분자, 연속 구분 기호 무시, 대/소문자 구분])</span>
+                                <span class="detail">열과 행 구분자를 사용해 문자열을 분할</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =TEXTSPLIT("Apple,Banana;Orange", ",", ";") 결과는 {"Apple"; "Banana"; "Orange"}가 됩니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 문자열로 변환 -->
+                <article>
+                    <details>
+                        <summary id="lower">
+                            <p>
+                                <span class="name">LOWER</span>
+                                <span class="fn">=lower(문자열)</span>
+                                <span class="detail">지정된 문자열을 소문자로 변환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =LOWER("Hello World") 결과는 "hello world"가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="upper">
+                            <p>
+                                <span class="name">UPPER</span>
+                                <span class="fn">=upper(문자열)</span>
+                                <span class="detail">지정된 문자열을 대문자로 변환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =UPPER("Hello World") 결과는 "HELLO WORLD"가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="proper">
+                            <p>
+                                <span class="name">PROPER</span>
+                                <span class="fn">=proper(문자열)</span>
+                                <span class="detail">각 단어의 첫번째 글자를 대문자로 변환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =PROPER("hello world") 결과는 "Hello World"가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="replace">
+                            <p>
+                                <span class="name">REPLACE</span>
+                                <span class="fn">=replace(문자열, 시작지점(1~), 길이, 새 문자열)</span>
+                                <span class="detail">문자열의 일부분을 다른 문자열로 대체</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =REPLACE("Hello World", 7, 5, "Universe") 결과는 "Hello Universe"가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="substitute">
+                            <p>
+                                <span class="name">SUBSTITUTE</span>
+                                <span class="fn">=substitute(문자열, 찾을 문자, 새 문자열, [찾을 바꿀 지점])</span>
+                                <span class="detail">문자에서 특정 문자를 찾아 다른 문자로 대체</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SUBSTITUTE("Hello World", "o", "i") 결과는 "Helli World"가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="text">
+                            <p>
+                                <span class="name">TEXT</span>
+                                <span class="fn">=text(값, 표시형식)</span>
+                                <span class="detail">특정 문자열 또는 셀의 값을 원하는 서식의 문자열로 변환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =TEXT(TODAY(), "yyyy-mm-dd") 결과는 현재 날짜를 "2023-06-17"과 같은 형식으로 표시합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="phonetic">
+                            <p>
+                                <span class="name">PHONETIC</span>
+                                <span class="fn">=phonetic(문자열)</span>
+                                <span class="detail">한자/일본어의 윗주(후리가나)를 추출/반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =PHONETIC("漢字") 결과는 "かんじ"가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="char">
+                            <p>
+                                <span class="name">CHAR</span>
+                                <span class="fn">=char(숫자)</span>
+                                <span class="detail">입력된 수를 유니코드표에 해당되는 문자로 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =CHAR(65) 결과는 "A"가 됩니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 숫자로 변환 -->
+                <article>
+                    <details>
+                        <summary id="code">
+                            <p>
+                                <span class="name">CODE</span>
+                                <span class="fn">=code(문자열)</span>
+                                <span class="detail">입력된 문자열의 첫 번째 문자를 나타내는 유니코드 숫자 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =CODE("A") 결과는 65가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="value">
+                            <p>
+                                <span class="name">VALUE</span>
+                                <span class="fn">=value(문자열)</span>
+                                <span class="detail">숫자 서식으로 인식되는 문자열을 숫자로 변환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =VALUE("123") 결과는 123이 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="len">
+                            <p>
+                                <span class="name">LEN</span>
+                                <span class="fn">=len(문자열)</span>
+                                <span class="detail">선택된 셀 또는 문자열의 글자수를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =LEN("Hello") 결과는 5가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="search_f">
+                            <p>
+                                <span class="name">SEARCH</span>
+                                <span class="fn">=search(찾을 문자, 문자열, [시작 지점])</span>
+                                <span class="detail">문자열에서 특정 문자가 처음으로 발견된 지점을 반환 (대소문자 구분)</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SEARCH("o", "Hello World") 결과는 5가 됩니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="find_f">
+                            <p>
+                                <span class="name">FIND</span>
+                                <span class="fn">=find(찾을 문자, 문자열, [시작 지점])</span>
+                                <span class="detail">문자열에서 특정 문자가 처음으로 발견된 지점을 반환 (대소문자 무시)</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =FIND("o", "Hello World") 결과는 5가 됩니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 평균 -->
+                <article>
+                    <details>
+                        <summary id="average">
+                            <p>
+                                <span class="name">AVERAGE</span>
+                                <span class="fn">=average(범위1, [범위2, ...])</span>
+                                <span class="detail">지정한 범위나 숫자의 산술 평균을 계산합니다.</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =AVERAGE(A1:A5)는 A1부터 A5까지의 셀 값들의 평균을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="averagea">
+                            <p>
+                                <span class="name">AVERAGEA</span>
+                                <span class="fn">=averagea(값1, [값2, ...])</span>
+                                <span class="detail">선택된 값들의 산술 평균을 계산합니다 (논리값, 텍스트 형식의 숫자 포함).</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =AVERAGEA(A1, B1, C1)는 A1, B1, C1의 값들의 평균을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="averageif">
+                            <p>
+                                <span class="name">AVERAGEIF</span>
+                                <span class="fn">=averageif(조건범위, 조건, [평균범위])</span>
+                                <span class="detail">조건을 만족하는 셀의 산술 평균을 계산합니다.</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =AVERAGEIF(A1:A5, ">50")는 A1부터 A5까지의 셀 중에서 50보다 큰 값들의 평균을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="averageifs">
+                            <p>
+                                <span class="name">AVERAGEIFS</span>
+                                <span class="fn">=averageifs(평균범위, 조건범위1, 조건1, [조건범위2, 조건2, ...])</span>
+                                <span class="detail">범위 내 여러 개의 조건을 만족하는 값의 산술 평균을 계산합니다.</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =AVERAGEIFS(A1:A5, B1:B5, ">50", C1:C5, "&lt;100")는 B1부터 B5까지의 셀 값이 50보다 크고 C1부터 C5까지의 셀 값이 100보다 작은 값들의 평균을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="average_weighted">
+                            <p>
+                                <span class="name">AVERAGE.WEIGHTED</span>
+                                <span class="fn">=average.weighted(값, 가중치, [추가 값, 추가 가중치])</span>
+                                <span class="detail">지정한 범위의 가중치를 고려한 산술 평균을 계산</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =AVERAGE.WEIGHTED(A1:A5, B1:B5)는 A1부터 A5까지의 값에 대한 가중치를 B1부터 B5까지의 값으로 적용하여 가중 평균을 반환합니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 카운트 -->
+                <article>
+                    <details>
+                        <summary id="count">
+                            <p>
+                                <span class="name">COUNT</span>
+                                <span class="fn">=count(범위, [범위2, ...])</span>
+                                <span class="detail">해당 범위에서 숫자를 포함하고 있는 셀의 개수를 계산합니다.</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =COUNT(A1:A5)는 A1부터 A5까지의 셀 중 숫자를 포함하는 셀의 개수를 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="counta">
+                            <p>
+                                <span class="name">COUNTA</span>
+                                <span class="fn">=counta(범위, [범위2, ...])</span>
+                                <span class="detail">해당 범위에서 비어있지 않은 셀의 개수를 계산합니다.</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =COUNTA(A1:A5)는 A1부터 A5까지의 셀 중 비어있지 않은 셀의 개수를 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="countblank">
+                            <p>
+                                <span class="name">COUNTBLANK</span>
+                                <span class="fn">=countblank(범위, [범위2, ...])</span>
+                                <span class="detail">해당 범위에서 비어있는 셀의 개수를 계산합니다.</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =COUNTBLANK(A1:A5)는 A1부터 A5까지의 셀 중 비어있는 셀의 개수를 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="countunique">
+                            <p>
+                                <span class="name">COUNTUNIQUE</span>
+                                <span class="fn">=countunique(범위, [범위2, ...])</span>
+                                <span class="detail">해당 범위에서 고유 값의 개수 계산</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =COUNTUNIQUE(A1:A5)는 A1부터 A5까지의 셀 중 고유 값의 개수를 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="countif">
+                            <p>
+                                <span class="name">COUNTIF</span>
+                                <span class="fn">=countif(조건범위, 조건)</span>
+                                <span class="detail">선택된 범위에서 조건을 만족하는 셀의 개수를 계산합니다.</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =COUNTIF(A1:A5, ">50")는 A1부터 A5까지의 셀 중에서 50보다 큰 값들을 만족하는 셀의 개수를 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="countifs">
+                            <p>
+                                <span class="name">COUNTIFS</span>
+                                <span class="fn">=countifs(조건범위1, 조건1, [조건범위2, 조건2,...])</span>
+                                <span class="detail">선택된 범위에서 여러 개의 조건을 만족하는 셀의 개수를 계산합니다.</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =COUNTIFS(A1:A5, ">50", B1:B5, "&lt;100")는 A1부터 A5까지의 셀 중에서 50보다 크고, B1부터 B5까지의 셀 중에서 100보다 작은 값을 만족하는 셀의 개수를 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="frequency">
+                            <p>
+                                <span class="name">FREQUENCY</span>
+                                <span class="fn">=frequency(집합범위, 간격범위)</span>
+                                <span class="detail">범위 내에서 값이 발생하는 빈도를 계산합니다.</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =FREQUENCY(A1:A10, B1:B5)는 A1부터 A10까지의 값이 B1부터 B5까지의 간격에 해당하는 빈도를 계산합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="mode">
+                            <p>
+                                <span class="name">MODE</span>
+                                <span class="fn">=mode(범위, [범위2, ...])</span>
+                                <span class="detail">범위 내에서 가장 자주 발생한 값을 반환합니다.</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =MODE(A1:A5)는 A1부터 A5까지의 값 중에서 가장 자주 발생한 값을 반환합니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 최소/최대 -->
+                <article>
+                    <details>
+                        <summary id="max">
+                            <p>
+                                <span class="name">MAX</span>
+                                <span class="fn">=max(범위, [범위2, ...])</span>
+                                <span class="detail">범위 내에서 가장 큰 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =MAX(A1:A5)는 범위 A1부터 A5까지의 값 중 가장 큰 값을 반환합니다.<br>
+                            =MAX(A1:C3)는 범위 A1부터 C3까지의 값 중 가장 큰 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="maxifs">
+                            <p>
+                                <span class="name">MAXIFS</span>
+                                <span class="fn">=maxifs(최대값범위, 조건범위1, 조건1, [조건범위2, 조건2, ...])</span>
+                                <span class="detail">범위 내에서 조건들을 만족하는 가장 큰 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =MAXIFS(A1:A5, B1:B5, ">10")는 범위 B1부터 B5까지의 값이 10보다 큰 경우에 대해 범위 A1부터 A5까지의 값 중 가장 큰 값을 반환합니다.<br>
+                            =MAXIFS(A1:C3, B1:B3, "&lt;0", C1:C3, ">5")는 범위 B1부터 B3까지의 값이 0보다 작고, 범위 C1부터 C3까지의 값이 5보다 큰 경우에 대해 범위 A1부터 C3까지의 값 중 가장 큰 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="min">
+                            <p>
+                                <span class="name">MIN</span>
+                                <span class="fn">=min(범위)</span>
+                                <span class="detail">범위 내에서 가장 작은 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =MIN(A1:A5)는 범위 A1부터 A5까지의 값 중 가장 작은 값을 반환합니다.<br>
+                            =MIN(A1:C3)는 범위 A1부터 C3까지의 값 중 가장 작은 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="minifs">
+                            <p>
+                                <span class="name">MINIFS</span>
+                                <span class="fn">=minifs(최소값범위, 조건범위1, 조건1, [조건범위2, 조건2, ...])</span>
+                                <span class="detail">범위 내에서 조건들을 만족하는 가장 작은 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =MINIFS(A1:A5, B1:B5, ">10")는 범위 B1부터 B5까지의 값이 10보다 큰 경우에 대해 범위 A1부터 A5까지의 값 중 가장 작은 값을 반환합니다.<br>
+                            =MINIFS(A1:C3, B1:B3, "&lt;0", C1:C3, ">5")는 범위 B1부터 B3까지의 값이 0보다 작고, 범위 C1부터 C3까지의 값이 5보다 큰 경우에 대해 범위 A1부터 C3까지의 값 중 가장 작은 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="large">
+                            <p>
+                                <span class="name">LARGE</span>
+                                <span class="fn">=large(범위, k)</span>
+                                <span class="detail">범위 내에서 k번째로 큰 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =LARGE(A1:A5, 2)는 범위 A1부터 A5까지의 값 중 두 번째로 큰 값을 반환합니다.<br>
+                            =LARGE(A1:C3, 3)는 범위 A1부터 C3까지의 값 중 세 번째로 큰 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="small">
+                            <p>
+                                <span class="name">SMALL</span>
+                                <span class="fn">=small(범위, k)</span>
+                                <span class="detail">범위 내에서 k번째로 작은 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SMALL(A1:A5, 2)는 범위 A1부터 A5까지의 값 중 두 번째로 작은 값을 반환합니다.<br>
+                            =SMALL(A1:C3, 3)는 범위 A1부터 C3까지의 값 중 세 번째로 작은 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="median">
+                            <p>
+                                <span class="name">MEDIAN</span>
+                                <span class="fn">=median(범위, [범위2, ...])</span>
+                                <span class="detail">값들 중 중간 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =MEDIAN(A1:A5)는 범위 A1부터 A5까지의 값들 중 중간 값을 반환합니다.<br>
+                            =MEDIAN(A1:C3)는 범위 A1부터 C3까지의 값들 중 중간 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="rank">
+                            <p>
+                                <span class="name">RANK</span>
+                                <span class="fn">=rank(값, 범위, [정렬방향])</span>
+                                <span class="detail">특정 값의 범위 내 순위를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =RANK(A1, A1:A5)는 값 A1이 범위 A1부터 A5까지에서 몇 번째로 큰 값인지를 반환합니다.<br>
+                            =RANK(A1, A1:C3, 1)는 값 A1이 범위 A1부터 C3까지에서 내림차순으로 정렬되었을 때 몇 번째로 큰 값인지를 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="rank_avg">
+                            <p>
+                                <span class="name">RANK.AVG</span>
+                                <span class="fn">=rank.avg(값, 범위, [정렬방향])</span>
+                                <span class="detail">범위 내 크기 순위를 계산한 뒤 해당 값의 평균 순위를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =RANK.AVG(A1, A1:A5)는 값 A1이 범위 A1부터 A5까지에서 크기 순위를 계산한 뒤 해당 값의 평균 순위를 반환합니다.<br>
+                            =RANK.AVG(A1, A1:C3, 0)는 값 A1이 범위 A1부터 C3까지에서 오름차순으로 정렬되었을 때 크기 순위를 계산한 뒤 해당 값의 평균 순위를 반환합니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 날짜 -->
+                <article>
+                    <details>
+                        <summary id="today">
+                            <p>
+                                <span class="name">TODAY</span>
+                                <span class="fn">=today()</span>
+                                <span class="detail">현재 컴퓨터 시스템의 날짜를 표시</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =today()는 오늘의 날짜를 반환합니다.
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary id="now">
+                            <p>
+                                <span class="name">NOW</span>
+                                <span class="fn">=now()</span>
+                                <span class="detail">현재 컴퓨터의 날짜와 시간을 표시</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =now()는 현재의 날짜와 시간을 반환합니다.
+                        </div>
+                    </details>
+                    
+                    <details>
+                        <summary id="date">
+                            <p>
+                                <span class="name">DATE</span>
+                                <span class="fn">=date(년, 월, 일)</span>
+                                <span class="detail">년, 월, 일을 이용하여 특정 날짜를 표시</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =date(2023, 6, 17)는 2023년 6월 17일을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="datedif">
+                            <p>
+                                <span class="name">DATEDIF</span>
+                                <span class="fn">=datedif(시작일, 종료일, 단위)</span>
+                                <span class="detail">두 날짜 사이의 일, 월 또는 연수를 선택하여 계산</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =datedif(A1, B1, "d")는 시작일(A1)과 종료일(B1) 사이의 일 수를 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="datevalue">
+                            <p>
+                                <span class="name">DATEVALUE</span>
+                                <span class="fn">=datevalue(날짜 텍스트)</span>
+                                <span class="detail">텍스트 형태로 저장된 날짜를 날짜계산에 사용되는 일련번호로 변환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =datevalue("2023/06/17")는 텍스트 형태로 저장된 날짜를 날짜계산에 사용되는 일련번호로 변환하여 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="edate">
+                            <p>
+                                <span class="name">EDATE</span>
+                                <span class="fn">=edate(시작일, 개월수)</span>
+                                <span class="detail">지정한 날짜로부터 특정 개월수 전/후의 날짜를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =edate(DATE(2021, 10, 15), 5)<br>
+                            시작일을 2021년 10월 15일로 설정하고, 5개월 후의 날짜를 반환합니다.<br>
+                            결과: 2022년 3월 15일
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="year">
+                            <p>
+                                <span class="name">YEAR</span>
+                                <span class="fn">=year(날짜)</span>
+                                <span class="detail">연도에 해당하는 값(데이터) 표시</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =year(DATE(2023, 6, 1))<br>
+                            날짜를 2023년 6월 1일로 설정하고, 해당 연도인 2023을 반환합니다.<br>
+                            결과: 2023
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="yearfrac">
+                            <p>
+                                <span class="name">YEARFRAC</span>
+                                <span class="fn">=yearfrac(시작일, 종료일, [계산기준])</span>
+                                <span class="detail">두 날짜 사이 기간이 일년 중 차지하는 비율을 계산</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =yearfrac(DATE(2022, 1, 1), DATE(2022, 6, 30), 1)<br>
+                            시작일을 2022년 1월 1일, 종료일을 2022년 6월 30일로 설정하고, 기준 1로 두었을 때 해당 기간이 일년 중 차지하는 비율을 계산합니다.<br>
+                            결과: 0.5
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="month">
+                            <p>
+                                <span class="name">MONTH</span>
+                                <span class="fn">=month(날짜)</span>
+                                <span class="detail">월에 해당하는 값(데이터) 표시</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =month(DATE(2023, 6, 1))<br>
+                            날짜를 2023년 6월 1일로 설정하고, 해당 월인 6을 반환합니다.<br>
+                            결과: 6
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="eomonth">
+                            <p>
+                                <span class="name">EOMONTH</span>
+                                <span class="fn">=eomonth(시작일, 개월 수)</span>
+                                <span class="detail">시작일로부터 특정 개월 수 이후의 마지막 날을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =eomonth(DATE(2021, 10, 15), 3)<br>
+                            시작일을 2021년 10월 15일로 설정하고, 3개월 후의 마지막 날짜를 반환합니다.<br>
+                            결과: 2022년 1월 31일
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="day">
+                            <p>
+                                <span class="name">DAY</span>
+                                <span class="fn">=day(날짜)</span>
+                                <span class="detail">일에 해당하는 값(데이터) 표시</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =day(DATE(2023, 6, 17))<br>
+                            날짜를 2023년 6월 17일로 설정하고, 해당 일인 17을 반환합니다.<br>
+                            결과: 17
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="days">
+                            <p>
+                                <span class="name">DAYS</span>
+                                <span class="fn">=days(시작일, 종료일)</span>
+                                <span class="detail">두 날짜 사이의 일수를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =days(DATE(2022, 1, 1), DATE(2022, 6, 30))<br>
+                            시작일을 2022년 1월 1일, 종료일을 2022년 6월 30일로 설정하고, 두 날짜 사이의 일수를 계산합니다.<br>
+                            결과: 180
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="days360">
+                            <p>
+                                <span class="name">DAYS360</span>
+                                <span class="fn">=days360(시작일, 종료일, [방법])</span>
+                                <span class="detail">일부 금융이자 계산에 사용되는 연 360일(월 30일)을 기준으로 두 날짜 사이의 일수를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =days360(DATE(2022, 1, 1), DATE(2022, 6, 30), 0)<br>
+                            시작일을 2022년 1월 1일, 종료일을 2022년 6월 30일로 설정하고, 방법을 0으로 두었을 때 두 날짜 사이의 일수를 계산합니다.<br>
+                            결과: 179
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="workday">
+                            <p>
+                                <span class="name">WORKDAY</span>
+                                <span class="fn">=workday(시작일, 영업일수, [휴일])</span>
+                                <span class="detail">지정된 영업일 수 이후의 종료일을 계산</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =workday(DATE(2023, 6, 17), 10)<br>
+                            시작일을 2023년 6월 17일로 설정하고, 영업일 수를 10으로 지정하여 이후의 종료일을 계산합니다.<br>
+                            결과: 2023년 7월 3일
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="workday_intl">
+                            <p>
+                                <span class="name">WORKDAY.INTL</span>
+                                <span class="fn">=workday.intl(시작일, 영업일수, [주말], [휴일])</span>
+                                <span class="detail">지정된 주말과 휴일을 제외한 지정된 작업일수 후의 날짜를 계산</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =workday.intl(DATE(2023, 6, 17), 10, "0000011", DATE(2023, 6, 20))<br>
+                            시작일을 2023년 6월 17일로 설정하고, 영업일 수를 10으로 지정하여 지정된 주말(토요일, 일요일)과
+                            특정 휴일(2023년 6월 20일)을 제외한 이후의 작업일을 계산합니다.<br>
+                            결과: 2023년 7월 5일
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="networkdays">
+                            <p>
+                                <span class="name">NETWORKDAYS</span>
+                                <span class="fn">=networkdays(시작일, 종료일, [휴일])</span>
+                                <span class="detail">두 날짜 사이의 주말과 특정 공휴일을 제외한 근무일수를 계산</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =networkdays(DATE(2022, 1, 1), DATE(2022, 12, 31), DATE(2022, 1, 3))<br>
+                            시작일을 2022년 1월 1일, 종료일을 2022년 12월 31일, 휴일을 2022년 1월 3일로 설정하고,
+                            두 날짜 사이에서 주말(토요일, 일요일)과 특정 공휴일을 제외한 근무일수를 계산합니다.<br>
+                            결과: 251
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="networkdays_intl">
+                            <p>
+                                <span class="name">NETWORKDAYS.INTL</span>
+                                <span class="fn">=networkdays.intl(시작일, 종료일, [주말], [휴일])</span>
+                                <span class="detail">두 날짜 사이에서 주말과 공휴일을 제외한 실제 근무일수를 계산</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =networkdays.intl(DATE(2022, 1, 1), DATE(2022, 12, 31), "0000011", DATE(2022, 1, 3))<br>
+                            시작일을 2022년 1월 1일, 종료일을 2022년 12월 31일, 주말을 토요일과 일요일로 설정하고,
+                            휴일을 2022년 1월 3일로 지정하여 실제 근무일 수를 계산합니다.<br>
+                            결과: 251
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="weekday">
+                            <p>
+                                <span class="name">WEEKDAY</span>
+                                <span class="fn">=weekday(날짜, 유형)</span>
+                                <span class="detail">해당하는 요일 번호를 표시</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =weekday(DATE(2023, 6, 17), 1)<br>
+                            날짜를 2023년 6월 17일로 설정하고, 유형을 1로 지정하여 요일 번호를 계산합니다.<br>
+                            결과: 7 (토요일에 해당하는 번호)
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="weeknum">
+                            <p>
+                                <span class="name">WEEKNUM</span>
+                                <span class="fn">=weeknum(날짜, [유형])</span>
+                                <span class="detail">입력된 날짜가 그 해에 해당하는 주를 나타내는 숫자를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =weeknum(DATE(2023, 6, 17))<br>
+                            날짜를 2023년 6월 17일로 설정하여 해당 주를 나타내는 숫자를 계산합니다.<br>
+                            결과: 25
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="isoweeknum">
+                            <p>
+                                <span class="name">ISOWEEKNUM</span>
+                                <span class="fn">=isoweeknum(날짜)</span>
+                                <span class="detail">입력된 날짜가 한 해 중 몇 번째 ISO(국제표준화기구)주인지 나타내는 숫자를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =isoweeknum(DATE(2023, 6, 17))<br>
+                            날짜를 2023년 6월 17일로 설정하여 해당 ISO 주를 나타내는 숫자를 계산합니다.<br>
+                            결과: 24
+                        </div>
+                    </details>
+                </article>
+                <!-- 시간 -->
+                <article>
+                    <details>
+                        <summary id="time">
+                            <p>
+                                <span class="name">TIME</span>
+                                <span class="fn">=time(시, 분, 초)</span>
+                                <span class="detail">시, 분, 초를 이용하여 특정 시간을 표시</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =time(9, 30, 0)<br>
+                            시간을 9시 30분 0초로 설정하여 특정 시간을 표시합니다.<br>
+                            결과: 0.395833333333333
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="timevalue">
+                            <p>
+                                <span class="name">TIMEVALUE</span>
+                                <span class="fn">=timevalue(시간 문자열)</span>
+                                <span class="detail">하루 24시간 중 시간이 나타내는 부분을 0에서 1사이의 수로 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =timevalue("9:30 AM")<br>
+                            시간 문자열을 "9:30 AM"으로 설정하여 시간이 나타내는 부분을 0에서 1사이의 수로 반환합니다.<br>
+                            결과: 0.395833333333333
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="hour">
+                            <p>
+                                <span class="name">HOUR</span>
+                                <span class="fn">=hour(시간)</span>
+                                <span class="detail">시에 해당하는 값(데이터) 표시</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =hour(TIME(9, 30, 0))<br>
+                            시간을 9시 30분 0초로 설정하여 해당 시간에 해당하는 값을 표시합니다.<br>
+                            결과: 9
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="minute">
+                            <p>
+                                <span class="name">MINUTE</span>
+                                <span class="fn">=minute(시간)</span>
+                                <span class="detail">분에 해당하는 값(데이터) 표시</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =minute(TIME(9, 30, 0))<br>
+                            시간을 9시 30분 0초로 설정하여 해당 분에 해당하는 값을 표시합니다.<br>
+                            결과: 30
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="second">
+                            <p>
+                                <span class="name">SECOND</span>
+                                <span class="fn">=second(시간)</span>
+                                <span class="detail">초에 해당하는 값(데이터) 표시</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =second(TIME(9, 30, 15))<br>
+                            시간을 9시 30분 15초로 설정하여 해당 초에 해당하는 값을 표시합니다.<br>
+                            결과: 15
+                        </div>
+                    </details>
+                    
+
+                </article>
+                <p class="help">
+                    <a href="support.html">
+                        원하는 내용을 찾지 못하셨나요?
+                    </a>
+                </p>
+            </div>
+        </section>
+        <footer></footer> 
+        <div id="botround"></div>
+    </body>
+</html>

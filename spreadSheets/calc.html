@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sheet Function</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/details.css">
+        <style>
+            a#calc {
+                color :rgb(46, 46, 46);
+                background-color: #FFF;
+                border-radius: 5px 0 0 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            
+        </header>
+        <aside>
+            <div>
+                <h1><a href="index.html" title="To Main">Spread<br>Sheet</a></h1>
+                <nav>
+                    <a id="search" href="search.html" title="Search"></a>
+                    <p>
+                        <a id="calc" href="calc.html"> Calc </a><br>
+                        <a id="data" href="data.html"> Data </a><br>
+                        <a id="stat" href="stat.html"> Stat </a><br>
+                        <a id="time" href="time.html"> Time </a>
+                    </p>
+                    <a class="top" href="#top" title="top">top</a>
+                </nav>
+            </div>
+
+
+        </aside>
+        
+        <section>
+            <p id="top"></p>
+                <!-- 연산 -->
+                <article>
+                    <details>
+                        <summary class="top" id="sum">
+                            <p>
+                                <span class="name">SUM</span>
+                                <span class="fn">=sum(셀 범위/숫자)</span>
+                                <span class="detail">지정된 셀 범위의 합계를 반환 (인수는 최대 30개)</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SUM(A1:A5)<br>
+                            셀 A1부터 A5까지의 합계를 반환합니다.
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary id="sumif">
+                            <p>
+                                <span class="name">SUMIF</span>
+                                <span class="fn">=sumif(조건범위, 조건, 합계범위)</span>
+                                <span class="detail">조건을 만족하는 데이터의 합계를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SUMIF(A1:A5, ">3", B1:B5)<br>
+                            셀 A1부터 A5까지의 값 중 3보다 큰 값들의 합계를 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="sumifs">
+                            <p>
+                                <span class="name">SUMIFS</span>
+                                <span class="fn">=sumifs(합계범위, 조건범위1, 조건1, [조건범위2, 조건2], ...)</span>
+                                <span class="detail">범위 안 여러개의 조건을 만족하는 값의 합계를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SUMIFS(C1:C5, A1:A5, ">3", B1:B5, "&lt;6")<br>
+                            셀 A1부터 A5까지의 값 중 3보다 크고, 셀 B1부터 B5까지의 값 중 6보다 작은 값들의 합계를 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="subtotal">
+                            <p>
+                                <span class="name">SUBTOTAL</span>
+                                <span class="fn">=subtotal(부분 합 함수, 범위)</span>
+                                <span class="detail">목록이나 범위에서 부분 합을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SUBTOTAL(9, A1:A5)<br>
+                            셀 A1부터 A5까지의 값들의 합계를 반환하며, 숨겨진 값은 포함하지 않습니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="product">
+                            <p>
+                                <span class="name">PRODUCT</span>
+                                <span class="fn">=product(셀 범위/숫자)</span>
+                                <span class="detail">지정된 셀 범위의 곱을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =PRODUCT(A1:A5)<br>
+                            셀 A1부터 A5까지의 값들의 곱을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="power">
+                            <p>
+                                <span class="name">POWER</span>
+                                <span class="fn">=power(숫자, k)</span>
+                                <span class="detail">처음 입력한 수를 밑수로 하여 k제곱한 수를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =POWER(2, 3)<br>
+                            2를 세제곱한 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="quotient">
+                            <p>
+                                <span class="name">QUOTIENT</span>
+                                <span class="fn">=quotient(숫자, k)</span>
+                                <span class="detail">숫자를 k로 나눈 수를 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =QUOTIENT(10, 3)<br>
+                            10을 3으로 나눈 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="mod">
+                            <p>
+                                <span class="name">MOD</span>
+                                <span class="fn">=mod(숫자,k)</span>
+                                <span class="detail">숫자를 k로 나눈 나머지 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =MOD(10, 3)<br>
+                            10을 3으로 나눈 나머지 값을 반환합니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 반올림/올림/내림 -->
+                <article>
+                    <details>
+                        <summary id="round">
+                            <p>
+                                <span class="name">ROUND</span>
+                                <span class="fn">=round(인수, 소수점 이하 자릿수)</span>
+                                <span class="detail">표시된 소수점 이하 자릿수에서 반올림</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =ROUND(3.14159, 2)<br>
+                            3.14159를 소수점 이하 두 자리에서 반올림합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="roundup">
+                            <p>
+                                <span class="name">ROUNDUP</span>
+                                <span class="fn">=roundup(인수, 올림할 자릿수)</span>
+                                <span class="detail">지정된 자릿수 아래의 수를 올림</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =ROUNDUP(3.14159, 2)<br>
+                            3.14159를 소수점 이하 두 자리에서 올립니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="rounddown">
+                            <p>
+                                <span class="name">ROUNDDOWN</span>
+                                <span class="fn">=rounddown(인수, 내림할 자릿수)</span>
+                                <span class="detail">지정된 자릿수 아래의 수를 내림</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =ROUNDDOWN(3.14159, 2)<br>
+                            3.14159를 소수점 이하 두 자리에서 내립니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="trunc">
+                            <p>
+                                <span class="name">TRUNC</span>
+                                <span class="fn">=trunc(인수,자릿수)</span>
+                                <span class="detail">지정된 자릿수 아래의 수를 버림</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =TRUNC(3.14159, 2)<br>
+                            3.14159를 소수점 이하 두 자리에서 버립니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="even">
+                            <p>
+                                <span class="name">EVEN</span>
+                                <span class="fn">=even(숫자)</span>
+                                <span class="detail">가장 가까운 짝수로 올림</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =EVEN(3.7)<br>
+                            3.7을 가장 가까운 짝수로 올립니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="odd">
+                            <p>
+                                <span class="name">ODD</span>
+                                <span class="fn">=odd(숫자)</span>
+                                <span class="detail">가장 가까운 홀수로 올림</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =ODD(3.2)<br>
+                            3.2를 가장 가까운 홀수로 올립니다.
+                        </div>
+                    </details>
+                </article>
+                <!-- 인수 변환 -->
+                <article>
+                    <details>
+                        <summary id="pi">
+                            <p>
+                                <span class="name">PI</span>
+                                <span class="fn">=pi()</span>
+                                <span class="detail">원주율을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =PI()<br>
+                            원주율 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="int">
+                            <p>
+                                <span class="name">INT</span>
+                                <span class="fn">=int(실수)</span>
+                                <span class="detail">실수에서 소수점 이하 절삭 후 정수로 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =INT(3.14)<br>
+                            3.14를 소수점 이하 절삭 후 정수로 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="abs">
+                            <p>
+                                <span class="name">ABS</span>
+                                <span class="fn">=abs(숫자)</span>
+                                <span class="detail">숫자의 절댓값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =ABS(-5)<br>
+                            -5의 절댓값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="sqrt">
+                            <p>
+                                <span class="name">SQRT</span>
+                                <span class="fn">=sqrt(숫자)</span>
+                                <span class="detail">숫자의 제곱근을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =SQRT(25)<br>
+                            25의 제곱근을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="exp">
+                            <p>
+                                <span class="name">EXP</span>
+                                <span class="fn">=exp(지수)</span>
+                                <span class="detail">지수 함수의 값 (e^지수)을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =EXP(2)<br>
+                            e의 제곱 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="ln">
+                            <p>
+                                <span class="name">LN</span>
+                                <span class="fn">=ln(숫자)</span>
+                                <span class="detail">숫자의 자연로그 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =LN(10)<br>
+                            10의 자연로그 값을 반환합니다.
+                        </div>
+                    </details>
+                    <details>
+                        <summary id="log">
+                            <p>
+                                <span class="name">LOG</span>
+                                <span class="fn">=log(숫자, 밑)</span>
+                                <span class="detail">지정된 밑을 가지는 숫자의 로그 값을 반환</span>
+                            </p>
+                        </summary>
+                        <div>
+                            =LOG(100, 10)<br>
+                            10을 밑으로 하는 100의 로그 값을 반환합니다.
+                        </div>
+                    </details>
+                </article>
+                <p class="help">
+                    <a href="support.html">
+                        원하는 내용을 찾지 못하셨나요?
+                    </a>
+                </p>
+            </div>
+        </section>
+            <nav class="quickbar">
+                <a href="#sum">sum</a>
+                <a href="#sumif">sumif</a>
+                <a href="#sumifs">sumifs</a>
+                <a href="#subtotal">subtotal</a>
+                <a href="#product">product</a>
+                <a href="#power">power</a>
+                <a href="#quotient">quotient</a>
+                <a href="#mod">mod</a>
+                <a href="#round">round</a>
+                <a href="#roundup">roundup</a>
+                <a href="#rounddown">rounddown</a>
+                <a href="#trunc">trunc</a>
+                <a href="#even">even</a>
+                <a href="#odd">odd</a>
+                <a href="#pi">pi</a>
+                <a href="#int">int</a>
+                <a href="#abs">abs</a>
+                <a href="#sqrt">sqrt</a>
+                <a href="#exp">exp</a>
+                <a href="#ln">ln</a>
+                <a href="#log">log</a>
+            </nav>
+        
+        <footer></footer> 
+        
+    </body>
+</html>

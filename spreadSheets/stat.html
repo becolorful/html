@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sheet Function</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/details.css">
+        <style>
+            a#stat {
+                color :rgb(46, 46, 46);
+                background-color: #FFF;
+                border-radius: 5px 0 0 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            
+        </header>
+        <aside>
+            <div>
+                <h1><a href="index.html" title="To Main">Spread<br>Sheet</a></h1>
+                <nav>
+                    <a id="search" href="search.html" title="Search"></a>
+                    <p>
+                        <a id="calc" href="calc.html"> Calc </a><br>
+                        <a id="data" href="data.html"> Data </a><br>
+                        <a id="stat" href="stat.html"> Stat </a><br>
+                        <a id="time" href="time.html"> Time </a>
+                    </p>
+                    <a class="top" href="#top" title="top">top</a>
+                </nav>
+            </div>
+        </aside>
+        <section>
+            <p id="top"></p>
+            <!-- 평균 -->
+            <article>
+                <details>
+                    <summary id="average" class="top">
+                        <p>
+                            <span class="name">AVERAGE</span>
+                            <span class="fn">=average(범위1, [범위2, ...])</span>
+                            <span class="detail">지정한 범위나 숫자의 산술 평균을 계산합니다.</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =AVERAGE(A1:A5)는 A1부터 A5까지의 셀 값들의 평균을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="averagea">
+                        <p>
+                            <span class="name">AVERAGEA</span>
+                            <span class="fn">=averagea(값1, [값2, ...])</span>
+                            <span class="detail">선택된 값들의 산술 평균을 계산합니다 (논리값, 텍스트 형식의 숫자 포함).</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =AVERAGEA(A1, B1, C1)는 A1, B1, C1의 값들의 평균을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="averageif">
+                        <p>
+                            <span class="name">AVERAGEIF</span>
+                            <span class="fn">=averageif(조건범위, 조건, [평균범위])</span>
+                            <span class="detail">조건을 만족하는 셀의 산술 평균을 계산합니다.</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =AVERAGEIF(A1:A5, ">50")는 A1부터 A5까지의 셀 중에서 50보다 큰 값들의 평균을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="averageifs">
+                        <p>
+                            <span class="name">AVERAGEIFS</span>
+                            <span class="fn">=averageifs(평균범위, 조건범위1, 조건1, [조건범위2, 조건2, ...])</span>
+                            <span class="detail">범위 내 여러 개의 조건을 만족하는 값의 산술 평균을 계산합니다.</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =AVERAGEIFS(A1:A5, B1:B5, ">50", C1:C5, "&lt;100")는 B1부터 B5까지의 셀 값이 50보다 크고 C1부터 C5까지의 셀 값이 100보다 작은 값들의 평균을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="average_weighted">
+                        <p>
+                            <span class="name">AVERAGE.WEIGHTED</span>
+                            <span class="fn">=average.weighted(값, 가중치, [추가 값, 추가 가중치])</span>
+                            <span class="detail">지정한 범위의 가중치를 고려한 산술 평균을 계산</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =AVERAGE.WEIGHTED(A1:A5, B1:B5)는 A1부터 A5까지의 값에 대한 가중치를 B1부터 B5까지의 값으로 적용하여 가중 평균을 반환합니다.
+                    </div>
+                </details>
+            </article>
+            <!-- 카운트 -->
+            <article>
+                <details>
+                    <summary id="count">
+                        <p>
+                            <span class="name">COUNT</span>
+                            <span class="fn">=count(범위, [범위2, ...])</span>
+                            <span class="detail">해당 범위에서 숫자를 포함하고 있는 셀의 개수를 계산합니다.</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =COUNT(A1:A5)는 A1부터 A5까지의 셀 중 숫자를 포함하는 셀의 개수를 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="counta">
+                        <p>
+                            <span class="name">COUNTA</span>
+                            <span class="fn">=counta(범위, [범위2, ...])</span>
+                            <span class="detail">해당 범위에서 비어있지 않은 셀의 개수를 계산합니다.</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =COUNTA(A1:A5)는 A1부터 A5까지의 셀 중 비어있지 않은 셀의 개수를 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="countblank">
+                        <p>
+                            <span class="name">COUNTBLANK</span>
+                            <span class="fn">=countblank(범위, [범위2, ...])</span>
+                            <span class="detail">해당 범위에서 비어있는 셀의 개수를 계산합니다.</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =COUNTBLANK(A1:A5)는 A1부터 A5까지의 셀 중 비어있는 셀의 개수를 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="countunique">
+                        <p>
+                            <span class="name">COUNTUNIQUE</span>
+                            <span class="fn">=countunique(범위, [범위2, ...])</span>
+                            <span class="detail">해당 범위에서 고유 값의 개수 계산</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =COUNTUNIQUE(A1:A5)는 A1부터 A5까지의 셀 중 고유 값의 개수를 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="countif">
+                        <p>
+                            <span class="name">COUNTIF</span>
+                            <span class="fn">=countif(조건범위, 조건)</span>
+                            <span class="detail">선택된 범위에서 조건을 만족하는 셀의 개수를 계산합니다.</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =COUNTIF(A1:A5, ">50")는 A1부터 A5까지의 셀 중에서 50보다 큰 값들을 만족하는 셀의 개수를 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="countifs">
+                        <p>
+                            <span class="name">COUNTIFS</span>
+                            <span class="fn">=countifs(조건범위1, 조건1, [조건범위2, 조건2,...])</span>
+                            <span class="detail">선택된 범위에서 여러 개의 조건을 만족하는 셀의 개수를 계산합니다.</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =COUNTIFS(A1:A5, ">50", B1:B5, "&lt;100")는 A1부터 A5까지의 셀 중에서 50보다 크고, B1부터 B5까지의 셀 중에서 100보다 작은 값을 만족하는 셀의 개수를 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="frequency">
+                        <p>
+                            <span class="name">FREQUENCY</span>
+                            <span class="fn">=frequency(집합범위, 간격범위)</span>
+                            <span class="detail">범위 내에서 값이 발생하는 빈도를 계산합니다.</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =FREQUENCY(A1:A10, B1:B5)는 A1부터 A10까지의 값이 B1부터 B5까지의 간격에 해당하는 빈도를 계산합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="mode">
+                        <p>
+                            <span class="name">MODE</span>
+                            <span class="fn">=mode(범위, [범위2, ...])</span>
+                            <span class="detail">범위 내에서 가장 자주 발생한 값을 반환합니다.</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =MODE(A1:A5)는 A1부터 A5까지의 값 중에서 가장 자주 발생한 값을 반환합니다.
+                    </div>
+                </details>
+            </article>
+            <!-- 최소/최대 -->
+            <article>
+                <details>
+                    <summary id="max">
+                        <p>
+                            <span class="name">MAX</span>
+                            <span class="fn">=max(범위, [범위2, ...])</span>
+                            <span class="detail">범위 내에서 가장 큰 값을 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =MAX(A1:A5)는 범위 A1부터 A5까지의 값 중 가장 큰 값을 반환합니다.<br>
+                        =MAX(A1:C3)는 범위 A1부터 C3까지의 값 중 가장 큰 값을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="maxifs">
+                        <p>
+                            <span class="name">MAXIFS</span>
+                            <span class="fn">=maxifs(최대값범위, 조건범위1, 조건1, [조건범위2, 조건2, ...])</span>
+                            <span class="detail">범위 내에서 조건들을 만족하는 가장 큰 값을 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =MAXIFS(A1:A5, B1:B5, ">10")는 범위 B1부터 B5까지의 값이 10보다 큰 경우에 대해 범위 A1부터 A5까지의 값 중 가장 큰 값을 반환합니다.<br>
+                        =MAXIFS(A1:C3, B1:B3, "&lt;0", C1:C3, ">5")는 범위 B1부터 B3까지의 값이 0보다 작고, 범위 C1부터 C3까지의 값이 5보다 큰 경우에 대해 범위 A1부터 C3까지의 값 중 가장 큰 값을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="min">
+                        <p>
+                            <span class="name">MIN</span>
+                            <span class="fn">=min(범위)</span>
+                            <span class="detail">범위 내에서 가장 작은 값을 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =MIN(A1:A5)는 범위 A1부터 A5까지의 값 중 가장 작은 값을 반환합니다.<br>
+                        =MIN(A1:C3)는 범위 A1부터 C3까지의 값 중 가장 작은 값을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="minifs">
+                        <p>
+                            <span class="name">MINIFS</span>
+                            <span class="fn">=minifs(최소값범위, 조건범위1, 조건1, [조건범위2, 조건2, ...])</span>
+                            <span class="detail">범위 내에서 조건들을 만족하는 가장 작은 값을 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =MINIFS(A1:A5, B1:B5, ">10")는 범위 B1부터 B5까지의 값이 10보다 큰 경우에 대해 범위 A1부터 A5까지의 값 중 가장 작은 값을 반환합니다.<br>
+                        =MINIFS(A1:C3, B1:B3, "&lt;0", C1:C3, ">5")는 범위 B1부터 B3까지의 값이 0보다 작고, 범위 C1부터 C3까지의 값이 5보다 큰 경우에 대해 범위 A1부터 C3까지의 값 중 가장 작은 값을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="large">
+                        <p>
+                            <span class="name">LARGE</span>
+                            <span class="fn">=large(범위, k)</span>
+                            <span class="detail">범위 내에서 k번째로 큰 값을 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =LARGE(A1:A5, 2)는 범위 A1부터 A5까지의 값 중 두 번째로 큰 값을 반환합니다.<br>
+                        =LARGE(A1:C3, 3)는 범위 A1부터 C3까지의 값 중 세 번째로 큰 값을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="small">
+                        <p>
+                            <span class="name">SMALL</span>
+                            <span class="fn">=small(범위, k)</span>
+                            <span class="detail">범위 내에서 k번째로 작은 값을 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =SMALL(A1:A5, 2)는 범위 A1부터 A5까지의 값 중 두 번째로 작은 값을 반환합니다.<br>
+                        =SMALL(A1:C3, 3)는 범위 A1부터 C3까지의 값 중 세 번째로 작은 값을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="median">
+                        <p>
+                            <span class="name">MEDIAN</span>
+                            <span class="fn">=median(범위, [범위2, ...])</span>
+                            <span class="detail">값들 중 중간 값을 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =MEDIAN(A1:A5)는 범위 A1부터 A5까지의 값들 중 중간 값을 반환합니다.<br>
+                        =MEDIAN(A1:C3)는 범위 A1부터 C3까지의 값들 중 중간 값을 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="rank">
+                        <p>
+                            <span class="name">RANK</span>
+                            <span class="fn">=rank(값, 범위, [정렬방향])</span>
+                            <span class="detail">특정 값의 범위 내 순위를 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =RANK(A1, A1:A5)는 값 A1이 범위 A1부터 A5까지에서 몇 번째로 큰 값인지를 반환합니다.<br>
+                        =RANK(A1, A1:C3, 1)는 값 A1이 범위 A1부터 C3까지에서 내림차순으로 정렬되었을 때 몇 번째로 큰 값인지를 반환합니다.
+                    </div>
+                </details>
+                <details>
+                    <summary id="rank_avg">
+                        <p>
+                            <span class="name">RANK.AVG</span>
+                            <span class="fn">=rank.avg(값, 범위, [정렬방향])</span>
+                            <span class="detail">범위 내 크기 순위를 계산한 뒤 해당 값의 평균 순위를 반환</span>
+                        </p>
+                    </summary>
+                    <div>
+                        =RANK.AVG(A1, A1:A5)는 값 A1이 범위 A1부터 A5까지에서 크기 순위를 계산한 뒤 해당 값의 평균 순위를 반환합니다.<br>
+                        =RANK.AVG(A1, A1:C3, 0)는 값 A1이 범위 A1부터 C3까지에서 오름차순으로 정렬되었을 때 크기 순위를 계산한 뒤 해당 값의 평균 순위를 반환합니다.
+                    </div>
+                </details>
+            </article>
+            <p class="help">
+                <a href="support.html">
+                    원하는 내용을 찾지 못하셨나요?
+                </a>
+            </p>
+        </section>
+        <nav class="quickbar">
+            <a href="#average">average</a>
+            <a href="#averagea">averagea</a>
+            <a href="#averageif">averageif</a>
+            <a href="#averageifs">averageifs</a>
+            <a href="#average_weighted">average.weighted</a>
+            <a href="#count">count</a>
+            <a href="#counta">counta</a>
+            <a href="#countblank">countblank</a>
+            <a href="#countunique">countunique</a>
+            <a href="#countif">countif</a>
+            <a href="#countifs">countifs</a>
+            <a href="#frequency">frequency</a>
+            <a href="#mode">mode</a>
+            <a href="#max">max</a>
+            <a href="#maxifs">maxifs</a>
+            <a href="#min">min</a>
+            <a href="#minifs">minifs</a>
+            <a href="#large">large</a>
+            <a href="#small">small</a>
+            <a href="#median">median</a>
+            <a href="#rank">rank</a>
+            <a href="#rank_avg">rank.avg</a>
+        </nav>
+        <footer>
+
+        </footer>
+    </body>
+</html>

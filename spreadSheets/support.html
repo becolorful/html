@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sheet Function</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@200&display=swap" rel="stylesheet">
+        <style>
+            section{
+                text-align: center;
+            }
+            h2{
+                width: 80%;
+                margin: 60px auto 20px auto;
+                border-bottom: 1px solid #aaaaaaad;
+                padding-bottom: 40px;
+                font-size: 18px;
+            }
+            
+            form>p {
+                padding-top: 10px;
+                color: black;
+                font-size: 13px;
+            }
+
+            label{
+                display: inline-block;
+                margin: 20px;
+            }
+
+            select {
+                margin-top: 20px;
+                border: none;
+                height: 30px;
+                width: 150px;
+                text-align: center;
+                border-radius: 10px;
+            }
+
+            input[type=radio] {
+                display: none;
+            }
+
+            img{
+                width: 20px;
+                margin-right: 5px;
+                margin-bottom: -3px;
+            }
+            
+            label.ms{
+                color: #107C41;
+                font-family: 'Segoe UI', sans-serif;
+            }
+            label.google{
+                color: #757575;
+                font-family: 'Noto Sans', sans-serif;
+            }
+
+            label.ms, label.google{
+                font-size: 17px;
+                padding: 15px 25px;
+                margin: 10px;
+                cursor: pointer;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+            }
+            label.ms:hover,
+            label.google:hover{
+                border-color: #107c417a;
+            }
+
+            #ms[type=radio]:checked ~ label.ms,
+            #google[type=radio]:checked ~ label.google{
+                border-color: #107C41;
+                box-shadow: 0 0 3px #107C41;
+            }
+
+            div#input {
+                position: relative;
+                width: 40vw;
+                margin: 0 auto;
+                float: left;
+            }
+            input[type=text] {
+                display: block;
+                font-size: 15px;
+                color: #222222;
+                width: 40vw;
+                border: none;
+                border-bottom: 1px solid #405c43b6;
+                padding-bottom: 10px;
+                padding-left: 10px;
+                position: relative;
+                box-sizing: border-box;
+                background: none;
+                z-index: 5;
+            }
+            input::placeholder { color: #aaaaaa; }
+            input:focus { outline: none; }
+            span.under {
+                display: block;
+                bottom: 0;
+                left: 0%;
+                background-color: #107C41;
+                width: 0;
+                height: 2px;
+                border-radius: 2px;
+                transition: 0.5s;
+                float: left;
+            }
+            input:focus ~ span.under,
+            input:hover ~ span.under{
+                width: 40vw;
+            }
+            button {
+                display: inline-block;
+                border: none;
+                background: url(img/search_b.png) no-repeat center ;
+                background-size: 20px;
+                color: transparent;
+                width: 20px;
+                height: 20px;
+                margin: 10px;
+            }
+            button:hover{
+                cursor: pointer;
+            }
+
+        </style>
+    </head>
+    <body>
+        <header></header>
+        <aside>
+            <div>
+                <h1><a href="index.html" title="To Main">Spread<br>Sheet</a></h1>
+                <nav>
+                    <a id="search" href="search.html" title="Search"></a>
+                    <p>
+                        <a id="calc" href="calc.html"> Calc </a><br>
+                        <a id="data" href="data.html"> Data </a><br>
+                        <a id="stat" href="stat.html"> Stat </a><br>
+                        <a id="time" href="time.html"> Time </a>
+                    </p>
+                    <a class="top" href="#top" title="top">top</a>
+                </nav>
+            </div>
+        </aside>
+        <section>
+            
+            <form class="search">
+                <h2>찾는 내용이 없으신가요?</h2>
+                <p>어디서 발생하는 문제인가요?</p>
+                <input type="radio" name="where" id="ms" value="ms">
+                <label for="ms" class="ms">
+                    <img src="img/exel.png">
+                    Microsoft Excel
+                </label>
+
+                <input type="radio" name="where" id="google" value="google">
+                <label for="google" class="google">
+                    <img src="img/google.png">
+                    <span style="font-weight: bold;">Google</span> Sheets
+                </label>
+                <p></p>
+                <label name="what">
+
+                    <div id="input">
+                        <input class="keyword" type="text" name="search" maxlength="255" value="" autocomplete="off" placeholder="검색어를 입력하세요.">
+                        <span class="under"></span>
+                    </div>
+                    <button class="img-button" type="submit" name="click" value=""></button>
+                </label>
+            </form>
+            
+            <script type="text/javascript">
+                const Searching = Search.prototype;
+            
+                function Search() {
+                    this.keyword = document.querySelector('input[name="search"]');
+                    this.button = document.querySelector('.img-button');
+                    this.form = document.querySelector('.search');
+            
+                    this.Engine();
+                }
+                Searching.Engine = function() {
+                    const self = this;
+            
+                    this.form.addEventListener("submit", function(e) {
+                        e.preventDefault();
+            
+                        self.engine = document.querySelector('input[name="where"]:checked').value;
+                        let keyword = self.keyword.value;
+            
+                        if (self.engine === "google") {
+                            if (keyword === "") {
+                                location.href = 'https://support.google.com/docs/table/25273?hl=ko&ref_topic=9054531';
+                            } else {
+                                location.href = "https://support.google.com/docs/search?q=" + keyword + "&hl=ko";
+                            }
+                        } else if (self.engine === "ms") {
+                            if (!keyword) {
+                                location.href = "https://support.microsoft.com/ko-kr/excel";
+                            } else {
+                                location.href = "https://support.microsoft.com/ko-KR/search/results?query=" + keyword;
+                            }
+                        }
+                    });
+                }
+            
+                new Search();
+            </script>
+        </section>
+        <footer></footer>
+    </body>
+</html>
